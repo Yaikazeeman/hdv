@@ -28,12 +28,18 @@ app.use(session({
     })
 }));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
 app.use(function(req, res, next) {
     if (req.session.user) res.locals.user = req.session.user;
     // console.log(res.locals.user)
     next();
 })
 
+app.use('/', require('./routes/index'));
 const login = require('./routes/login')
 app.use('/', login);
 const logout = require('./routes/login')
@@ -42,6 +48,8 @@ const signup = require('./routes/signup')
 app.use('/', signup);
 const newOrder = require('./routes/newOrder')
 app.use('/', newOrder);
+const orders = require('./routes/orders')
+app.use('/', orders);
 const admin = require('./routes/admin')
 app.use('/', admin);
 
