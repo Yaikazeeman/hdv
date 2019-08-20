@@ -15,7 +15,6 @@ router.post('/login', (req, res) => {
             username: req.body.username
         })
         .then((user) => {
-            debugger
             bcrypt.compare(req.body.password, user.password, function (err, match) {
                 if (err) throw new Error("Encryption error");
                 if (match) {

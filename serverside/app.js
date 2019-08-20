@@ -52,5 +52,7 @@ const orders = require('./routes/orders')
 app.use('/', orders);
 const admin = require('./routes/admin')
 app.use('/', admin);
+const edit = require('./routes/edit')
+app.use('/', edit);
 
 app.listen(process.env.PORT, () => { console.log(`app listening on port ${process.env.PORT}`) })
