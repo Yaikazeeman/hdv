@@ -10,34 +10,31 @@ router.use(bodyParser.urlencoded({
 }));
 
 router.post('/newOrder', (req, res, next) => {
-    console.log(req.body)
+    let splitRental;
+    if(req.body.rental){
+        splitRental = req.body.rental.split(",")
+    }
+   else{
+       splitRental=[]
+   }
+    let splitMeal = req.body.rental.split(",")
     let newOrder = new Orders({
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
         date: req.body.date,
-        rental: req.body.rental,
-        meal: req.body.meal,
+        rental: splitRental,
+        meal: splitMeal,
         amount: req.body.amount,
         notes: req.body.notes
         })
 
     newOrder.save()
         .then((order) => {
-            // var postArray = mongoose.Types.ObjectId(post._id)
-            // var arr = res.locals.user.posts;
-            // arr.push(postArray)
-            // Users.findByIdAndUpdate(res.locals.user._id, { posts: arr }, { new: true })
-            //     .then((updateArray) => {
-            //         console.log("post array is updated")
-            //         res.locals.user = updateArray
-            //     })
-            //     .catch((error) => {
-            //         console.log(error)
-            //     })
-            // res.redirect('/')
-
             console.log("Your order is saved")
-            res.json("order is saved to the database")
+            Orders.find({}).sort({date: -1})
+            .then(response => {
+                res.json(response)
+            })
         })
         .catch((err) => {
             res.send(err)

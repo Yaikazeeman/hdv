@@ -9,7 +9,11 @@ const MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
 
 
-app.use(cors())
+app.use(cors({
+    origin: true,
+    credentials: true
+}))
+
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
     .then((x) => {
         console.log(`database name: ${x.connections[0].name}`);
@@ -54,5 +58,7 @@ const admin = require('./routes/admin')
 app.use('/', admin);
 const edit = require('./routes/edit')
 app.use('/', edit);
+// const delete = require('./routes/delete')
+app.use('/', require('./routes/delete'));
 
 app.listen(process.env.PORT, () => { console.log(`app listening on port ${process.env.PORT}`) })

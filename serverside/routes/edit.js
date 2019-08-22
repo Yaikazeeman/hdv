@@ -10,12 +10,20 @@ router.use(bodyParser.urlencoded({
 
 router.post('/edit', (req, res, next) => {
 let id = req.body.id
+let splitRental;
+if(req.body.rental){
+    splitRental = req.body.rental.split(",")
+}
+else{
+   splitRental=[]
+}
+let splitMeal = req.body.rental.split(",")
     let editOrder = ({
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
         date: req.body.date,
-        rental: req.body.rental,
-        meal: req.body.meal,
+        rental: splitRental,
+        meal: splitMeal,
         amount: req.body.amount,
         notes: req.body.notes
         })
@@ -24,13 +32,16 @@ let id = req.body.id
         new: true
     })
         .then((order) => {
-            console.log("Your order is saved")
-            res.json("edit is saved to the database")
+            console.log("Your order is updated")
+            Orders.find({}).sort({date: -1})
+            .then(response =>{
+                res.json(response)
+            })
         })
         .catch((err) => {
-            res.send(err)
             console.log(err)
         })
 })
+
 
 module.exports = router;
